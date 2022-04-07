@@ -35,7 +35,7 @@ declare module Meta.Pixel {
 
   type ConfigOptions = {
     pixelId: string;
-    autoConfig?: string;
+    autoConfig?: boolean;
   };
 
   type AddPaymentInfo = {
