@@ -1,0 +1,29 @@
+{
+  "name": "meta-pixel",
+  "version": "1.0.0",
+  "description": "Simple, framework agnostic and GDPR Complaint library to track data to Meta Pixel",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": "David Øvrelid",
+  "license": "MIT",
+  "keywords": [
+    "React",
+    "Vue",
+    "Angular",
+    "JavaScript",
+    "TypeScript",
+    "Meta Pixel"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "yarn build"
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "typescript": "^4.6.3"
+  },
+  "files": [
+    "lib/**/*"
+  ]
+}
