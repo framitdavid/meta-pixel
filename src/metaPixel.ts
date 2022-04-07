@@ -36,7 +36,7 @@ const setDebugMode = (isDebugMode: boolean): void => {
 
 const logIfDebugMode = (message: string): void => {
   if (!isDebugModeActivated) return;
-  log(message, 'info');
+  log(JSON.stringify(message), 'info');
 };
 
 export const metaPixel: Pixel = {
