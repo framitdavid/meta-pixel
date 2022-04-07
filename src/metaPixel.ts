@@ -36,7 +36,7 @@ const setDebugMode = (isDebugMode: boolean): void => {
 
 const logIfDebugMode = (message: string): void => {
   if (!isDebugModeActivated) return;
-  log(JSON.stringify(message), 'info');
+  log(message, 'info');
 };
 
 export const metaPixel: Pixel = {
@@ -88,7 +88,7 @@ export const metaPixel: Pixel = {
   track: (title: string, data: Meta.Pixel.DataCollection): void => {
     if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
     fbq('track', title, data);
-    logIfDebugMode(`Track fbq("track", ${title}, ${data})`);
+    logIfDebugMode(`Track fbq("track", ${title}, ${JSON.stringify(data)})`);
   },
 
   /** Read more about single tracking at https://developers.facebook.com/docs/meta-pixel/advanced */
@@ -99,14 +99,14 @@ export const metaPixel: Pixel = {
   ): void => {
     if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
     fbq('trackSingle', pixelId, event, data);
-    logIfDebugMode(`TrackSingle fbq("TrackSingle", ${pixelId}, ${event}, ${data})`);
+    logIfDebugMode(`TrackSingle fbq("TrackSingle", ${pixelId}, ${event}, ${JSON.stringify(data)})`);
   },
 
   /** Read more about trackCustom at https://developers.facebook.com/docs/meta-pixel/advanced */
   trackCustom: (title: string, data: Meta.Pixel.DataCollection): void => {
     if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
     fbq('trackCustom', title, data);
-    logIfDebugMode(`TrackCustom fbq("trackCustom", ${title}, ${data})`);
+    logIfDebugMode(`TrackCustom fbq("trackCustom", ${title}, ${JSON.stringify(data)})`);
   },
 
   /** Read more about trackSingleCustom at https://developers.facebook.com/docs/meta-pixel/advanced */
@@ -118,7 +118,7 @@ export const metaPixel: Pixel = {
     if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
     fbq('trackSingleCustom', pixelId, event, data);
     logIfDebugMode(
-      `TrackCustom fbq("trackSingleCustom", ${pixelId}, ${event}, ${data});`,
+      `TrackCustom fbq("trackSingleCustom", ${pixelId}, ${event}, ${JSON.stringify(data)});`,
     );
   },
 };
