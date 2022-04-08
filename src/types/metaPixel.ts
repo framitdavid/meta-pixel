@@ -27,11 +27,47 @@ declare module Meta.Pixel {
     | Subscribe
     | ViewContent;
   type Fbq = {
-    (eventType: string, pixelId: string, eventName: string, data: DataCollection): void;
-    (eventType: string, eventName: string): void;
-    (eventType: string, eventName: string, data: DataCollection): void;
-    (eventType: string, eventName: string, data: boolean, pixelId: string): void;
+    (
+      eventType: EventType,
+      pixelId: string,
+      eventName: string,
+      data: DataCollection,
+    ): void;
+    (eventType: EventType, title: string): void;
+    (eventType: EventType, title: string, data: DataCollection): void;
+    (eventType: EventType, eventName: EventName): void;
+    (eventType: EventType, eventName: EventName, data: DataCollection): void;
+    (eventType: EventType, title: string, data: boolean, pixelId: string): void;
   };
+
+  type EventType =
+    | 'set'
+    | 'init'
+    | 'consent'
+    | 'track'
+    | 'trackSingle'
+    | 'trackCustom'
+    | 'trackSingleCustom';
+
+  type EventName =
+    | 'AddPaymentInfo'
+    | 'AddToCart'
+    | 'AddToWishlist'
+    | 'CompleteRegistration'
+    | 'Contact'
+    | 'CustomizeProduct'
+    | 'Donate'
+    | 'FindLocation'
+    | 'InitiateCheckout'
+    | 'Lead'
+    | 'PageView'
+    | 'Purchase'
+    | 'Schedule'
+    | 'Search'
+    | 'StartTrial'
+    | 'SubmitApplication'
+    | 'Subscribe'
+    | 'ViewContent';
 
   type ConfigOptions = {
     pixelId: string;
