@@ -3,11 +3,6 @@ Simple, framework agnostic and GDPR Compliance library to track data to Meta
 
 This library is a wrapper for Meta Pixel that can be used with React, Angular, Vue and all JS based applications. This library does not depend on any frameworks or libraries. The Library does support both JS and TypeScript
 
-
-## Who can use it?
-Write more... 
-
-
 ## Get started
 ```
   npm install --save @framitdavid/meta-pixel
@@ -34,15 +29,16 @@ const config: Config = {
 Pixel.initialize(config);
 ```
 
-### Grant consent
-Write more about consent here
+If you do not provide your PixelId, you should get an error message within the Dev-tools console: “Please initialize Pixel by calling Pixel.initialize(your-pixel-id: string) before start tracking.”
 
+### Grant consent
+The library does not send any kind of data to Meta Pixel before the user has granted consent to beeing tracked.
 
 ### Revoke consent
-Write more about revoke consent
+When calling `Pixel.revokeConsent()`, the tracking will be stopped. 
 
 ### Tracking
-Write more about tracking here.
+Example of tracking data to Meta Pixel.
 
 ```typescript
 import Pixel from 'js-meta-pixel';
@@ -57,8 +53,7 @@ Pixel.trackSingle("1234", "AddToCart", {
 });
 ```
 
-### Events to track
-Write more about the events that can be tracked. 
+The following events are supported to be tracked:
 
 ```typescript
   type EventName =
