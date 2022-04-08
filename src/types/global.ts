@@ -1,7 +1,7 @@
-export {};
+import { MetaPixel } from './pixel';
 
 declare global {
   interface Window {
-    faq: Meta.Pixel.Fbq;
+    faq: MetaPixel.Fbq;
   }
 }

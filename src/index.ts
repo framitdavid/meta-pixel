@@ -1,1 +1,1 @@
-export * from './metaPixel';
+export * from './pixel';

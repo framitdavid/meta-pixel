@@ -5,8 +5,8 @@
  *  There may be erros within this definition, please feel free to create an PR if you find any issues.
  *  */
 
-declare var fbq: Meta.Pixel.Fbq;
-declare module Meta.Pixel {
+declare var fbq: MetaPixel.Fbq;
+declare module MetaPixel {
   type DataCollection =
     | AddPaymentInfo
     | AddToCart
@@ -179,3 +179,6 @@ declare module Meta.Pixel {
     value?: number;
   };
 }
+
+export { fbq };
+export type { MetaPixel };
