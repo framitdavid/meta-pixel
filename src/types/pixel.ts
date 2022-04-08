@@ -36,6 +36,14 @@ declare module MetaPixel {
     (eventType: EventType, eventName: EventName): void;
     (eventType: EventType, eventName: EventName, data: DataCollection): void;
     (eventType: EventType, title: string, data: boolean, pixelId: string): void;
+    (
+      eventType: EventType,
+      title: string,
+      eventName: undefined,
+      options: { eventId: string },
+    ): void;
+    disablePushState: boolean;
+    allowDuplicatePageViews: boolean;
   };
 
   type EventType =

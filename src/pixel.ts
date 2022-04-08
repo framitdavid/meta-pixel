@@ -10,13 +10,15 @@ declare var fbq: MetaPixel.Fbq;
 
 type Config = {
   isDebugMode?: boolean;
+  disablePushState?: boolean;
+  allowDuplicatePageViews?: boolean;
 } & MetaPixel.ConfigOptions;
 
 type MetaPixel = {
   initialize: ({ pixelId, autoConfig, isDebugMode }: Config) => void;
   setHasGrantedConsent: () => void;
   revokeConsent: () => void;
-  pageView: () => void;
+  pageView: (eventId?: string) => void;
   track: (title: string, data: MetaPixel.DataCollection) => void;
   trackSingle: (
     pixelId: string,
@@ -56,7 +58,13 @@ const revokeConsent = (): void => {
 };
 
 /** Read more about initializing at https://developers.facebook.com/docs/meta-pixel/get-started */
-const initialize = ({ pixelId, autoConfig, isDebugMode = false }: Config): void => {
+const initialize = ({
+  pixelId,
+  autoConfig,
+  isDebugMode = false,
+  disablePushState = false,
+  allowDuplicatePageViews = false,
+}: Config): void => {
   if (!isWindowAvailable) return log(GenericLogMessage.WindowNotAvailable);
 
   const alreadyInitialized = !!window.faq;
@@ -72,6 +80,9 @@ const initialize = ({ pixelId, autoConfig, isDebugMode = false }: Config): void 
   fbq('set', 'autoConfig', !!autoConfig, pixelId);
   logIfDebugMode(`Set, fbq("set", "autoConfig", ${!!autoConfig}, ${pixelId})`);
 
+  fbq.allowDuplicatePageViews = allowDuplicatePageViews;
+  fbq.disablePushState = disablePushState;
+
   fbq('init', pixelId);
   logIfDebugMode(`Init, fbq("init", ${pixelId})`);
   initialized = true;
@@ -86,9 +97,9 @@ const setHasGrantedConsent = (): void => {
 };
 
 /** Read more about pageView at https://developers.facebook.com/docs/meta-pixel/get-started */
-const pageView = (): void => {
+const pageView = (eventId?: string): void => {
   if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
-  fbq('track', 'PageView');
+  eventId ? fbq('track', 'PageView', undefined, { eventId }) : fbq('track', 'PageView');
   logIfDebugMode(`Track fbq("track", "PageView")`);
 };
 
