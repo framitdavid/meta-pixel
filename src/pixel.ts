@@ -46,6 +46,14 @@ const logIfDebugMode = (message: string): void => {
   log(message, 'info');
 };
 
+/** To revoke consent to track data using Pixel. Read more at https://developers.facebook.com/docs/meta-pixel/implementation/gdpr */
+const revokeConsent = (): void => {
+  if (!isConsentGranted || !initialized) return;
+  isConsentGranted = false;
+  fbq('consent', 'revoke');
+  logIfDebugMode(`Track fbq("consent", "revoke")`);
+};
+
 export const Pixel: Pixel = {
   /** Read more about initializing at https://developers.facebook.com/docs/meta-pixel/get-started */
   initialize: ({ pixelId, autoConfig, isDebugMode = false }: Config): void => {
@@ -58,6 +66,7 @@ export const Pixel: Pixel = {
     if (!pixelId)
       return log('Please provide your pixelId to initialize an Meta Pixel instance');
 
+    revokeConsent();
     doMetaPixelBaseCodeInitialize();
 
     fbq('set', 'autoConfig', !!autoConfig, pixelId);
@@ -76,13 +85,7 @@ export const Pixel: Pixel = {
     logIfDebugMode(`Track fbq("consent", "grant")`);
   },
 
-  /** To revoke consent to track data using Pixel. Read more at https://developers.facebook.com/docs/meta-pixel/implementation/gdpr */
-  revokeConsent: (): void => {
-    if (!isConsentGranted || !initialized) return;
-    isConsentGranted = false;
-    fbq('consent', 'revoke');
-    logIfDebugMode(`Track fbq("consent", "revoke")`);
-  },
+  revokeConsent,
 
   /** Read more about pageView at https://developers.facebook.com/docs/meta-pixel/get-started */
   pageView: (): void => {
