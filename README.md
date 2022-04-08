@@ -23,10 +23,10 @@ import Pixel, { Config } from '@framit/meta-pixel';
 
 const config: Config = {
     pixelId: 'your-pixel-id',
-    autoConfig: true, // Optional
-    isDebugMode: false; // Optional
-    disablePushState: false, // Optional, not recommended. Read more at https://developers.facebook.com/ads/blog/post/2017/05/29/tagging-a-single-page-application-facebook-pixel
-    allowDuplicatePageViews: false // Optional
+    autoConfig: true, // Optional, true as default.
+    isDebugMode: false; // Optional, false as default.
+    disablePushState: false, // Optional, false as default. It's not recommended to disable push state, read more at https://developers.facebook.com/ads/blog/post/2017/05/29/tagging-a-single-page-application-facebook-pixel
+    allowDuplicatePageViews: false // Optional, false as default.
 } 
 
 Pixel.initialize(config);

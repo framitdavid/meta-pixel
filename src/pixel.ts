@@ -60,7 +60,7 @@ const revokeConsent = (): void => {
 /** Read more about initializing at https://developers.facebook.com/docs/meta-pixel/get-started */
 const initialize = ({
   pixelId,
-  autoConfig,
+  autoConfig = true,
   isDebugMode = false,
   disablePushState = false,
   allowDuplicatePageViews = false,
@@ -77,7 +77,7 @@ const initialize = ({
   revokeConsent();
   doMetaPixelBaseCodeInitialize();
 
-  fbq('set', 'autoConfig', !!autoConfig, pixelId);
+  fbq('set', 'autoConfig', autoConfig, pixelId);
   logIfDebugMode(`Set, fbq("set", "autoConfig", ${!!autoConfig}, ${pixelId})`);
 
   fbq.allowDuplicatePageViews = allowDuplicatePageViews;
