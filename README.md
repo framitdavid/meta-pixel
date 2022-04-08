@@ -88,3 +88,6 @@ Pixel.trackSingleCustom('pixel-id','RecruitedAFriend', {
   currency: "NOK"
 });
 ```
+
+## Tip!
+To make sure your setup is sending data correctly to Meta, try out Facebook Pixel Helper Chrome Extension, https://chrome.google.com/webstore/detail/facebook-pixel-helper/fdgfkebogiimcoedlicjlajpkdmockpc/related
