@@ -1,5 +1,8 @@
 # Meta Pixel
-Typesafe wrapper for Meta Pixel that can be used with React, Angular, Vue and all JS based applications. This library does not depend on any frameworks or libraries. This Library do support both JS and TypeScript.
+Simple, framework agnostic and GDPR Compliance library to track data to Meta
+
+This library is a wrapper for Meta Pixel that can be used with React, Angular, Vue and all JS based applications. This library does not depend on any frameworks or libraries. The Library does support both JS and TypeScript
+
 
 ## Who can use it?
 Write more... 
