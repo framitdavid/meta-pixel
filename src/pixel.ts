@@ -12,7 +12,7 @@ type Config = {
   isDebugMode?: boolean;
 } & MetaPixel.ConfigOptions;
 
-type Pixel = {
+type MetaPixel = {
   initialize: ({ pixelId, autoConfig, isDebugMode }: Config) => void;
   setHasGrantedConsent: () => void;
   revokeConsent: () => void;
@@ -55,81 +55,92 @@ const revokeConsent = (): void => {
   }
 };
 
-export const Pixel: Pixel = {
-  /** Read more about initializing at https://developers.facebook.com/docs/meta-pixel/get-started */
-  initialize: ({ pixelId, autoConfig, isDebugMode = false }: Config): void => {
-    if (!isWindowAvailable) return log(GenericLogMessage.WindowNotAvailable);
+/** Read more about initializing at https://developers.facebook.com/docs/meta-pixel/get-started */
+const initialize = ({ pixelId, autoConfig, isDebugMode = false }: Config): void => {
+  if (!isWindowAvailable) return log(GenericLogMessage.WindowNotAvailable);
 
-    const alreadyInitialized = !!window.faq;
-    if (alreadyInitialized) return;
+  const alreadyInitialized = !!window.faq;
+  if (alreadyInitialized) return;
 
-    setDebugMode(isDebugMode);
-    if (!pixelId)
-      return log('Please provide your pixelId to initialize an Meta Pixel instance');
+  setDebugMode(isDebugMode);
+  if (!pixelId)
+    return log('Please provide your pixelId to initialize an Meta Pixel instance');
 
-    revokeConsent();
-    doMetaPixelBaseCodeInitialize();
+  revokeConsent();
+  doMetaPixelBaseCodeInitialize();
 
-    fbq('set', 'autoConfig', !!autoConfig, pixelId);
-    logIfDebugMode(`Set, fbq("set", "autoConfig", ${!!autoConfig}, ${pixelId})`);
+  fbq('set', 'autoConfig', !!autoConfig, pixelId);
+  logIfDebugMode(`Set, fbq("set", "autoConfig", ${!!autoConfig}, ${pixelId})`);
 
-    fbq('init', pixelId);
-    logIfDebugMode(`Init, fbq("init", ${pixelId})`);
-    initialized = true;
-  },
+  fbq('init', pixelId);
+  logIfDebugMode(`Init, fbq("init", ${pixelId})`);
+  initialized = true;
+};
 
-  /** To save granted consent to track data using Pixel. Read more at https://developers.facebook.com/docs/meta-pixel/implementation/gdpr */
-  setHasGrantedConsent: (): void => {
-    if (isConsentGranted) return;
-    isConsentGranted = true;
-    fbq('consent', 'grant');
-    logIfDebugMode(`Track fbq("consent", "grant")`);
-  },
+/** To save granted consent to track data using Pixel. Read more at https://developers.facebook.com/docs/meta-pixel/implementation/gdpr */
+const setHasGrantedConsent = (): void => {
+  if (isConsentGranted) return;
+  isConsentGranted = true;
+  fbq('consent', 'grant');
+  logIfDebugMode(`Track fbq("consent", "grant")`);
+};
 
+/** Read more about pageView at https://developers.facebook.com/docs/meta-pixel/get-started */
+const pageView = (): void => {
+  if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
+  fbq('track', 'PageView');
+  logIfDebugMode(`Track fbq("track", "PageView")`);
+};
+
+/** Read more about tracking at https://developers.facebook.com/docs/meta-pixel/advanced */
+const track = (title: string, data: MetaPixel.DataCollection): void => {
+  if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
+  fbq('track', title, data);
+  logIfDebugMode(`Track fbq("track", ${title}, ${JSON.stringify(data)})`);
+};
+
+/** Read more about single tracking at https://developers.facebook.com/docs/meta-pixel/advanced */
+const trackSingle = (
+  pixelId: string,
+  event: string,
+  data: MetaPixel.DataCollection,
+): void => {
+  if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
+  fbq('trackSingle', pixelId, event, data);
+  logIfDebugMode(
+    `TrackSingle fbq("TrackSingle", ${pixelId}, ${event}, ${JSON.stringify(data)})`,
+  );
+};
+
+/** Read more about trackCustom at https://developers.facebook.com/docs/meta-pixel/advanced */
+const trackCustom = (title: string, data: MetaPixel.DataCollection): void => {
+  if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
+  fbq('trackCustom', title, data);
+  logIfDebugMode(`TrackCustom fbq("trackCustom", ${title}, ${JSON.stringify(data)})`);
+};
+
+/** Read more about trackSingleCustom at https://developers.facebook.com/docs/meta-pixel/advanced */
+const trackSingleCustom = (
+  pixelId: string,
+  event: string,
+  data: MetaPixel.DataCollection,
+): void => {
+  if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
+  fbq('trackSingleCustom', pixelId, event, data);
+  logIfDebugMode(
+    `trackSingleCustom fbq("trackSingleCustom", ${pixelId}, ${event}, ${JSON.stringify(
+      data,
+    )});`,
+  );
+};
+
+export const Pixel: MetaPixel = {
+  initialize,
+  setHasGrantedConsent,
   revokeConsent,
-
-  /** Read more about pageView at https://developers.facebook.com/docs/meta-pixel/get-started */
-  pageView: (): void => {
-    if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
-    fbq('track', 'PageView');
-    logIfDebugMode(`Track fbq("track", "PageView")`);
-  },
-
-  /** Read more about tracking at https://developers.facebook.com/docs/meta-pixel/advanced */
-  track: (title: string, data: MetaPixel.DataCollection): void => {
-    if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
-    fbq('track', title, data);
-    logIfDebugMode(`Track fbq("track", ${title}, ${JSON.stringify(data)})`);
-  },
-
-  /** Read more about single tracking at https://developers.facebook.com/docs/meta-pixel/advanced */
-  trackSingle: (pixelId: string, event: string, data: MetaPixel.DataCollection): void => {
-    if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
-    fbq('trackSingle', pixelId, event, data);
-    logIfDebugMode(
-      `TrackSingle fbq("TrackSingle", ${pixelId}, ${event}, ${JSON.stringify(data)})`,
-    );
-  },
-
-  /** Read more about trackCustom at https://developers.facebook.com/docs/meta-pixel/advanced */
-  trackCustom: (title: string, data: MetaPixel.DataCollection): void => {
-    if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
-    fbq('trackCustom', title, data);
-    logIfDebugMode(`TrackCustom fbq("trackCustom", ${title}, ${JSON.stringify(data)})`);
-  },
-
-  /** Read more about trackSingleCustom at https://developers.facebook.com/docs/meta-pixel/advanced */
-  trackSingleCustom: (
-    pixelId: string,
-    event: string,
-    data: MetaPixel.DataCollection,
-  ): void => {
-    if (!initialized) return log(GenericLogMessage.PixelNotInitialized);
-    fbq('trackSingleCustom', pixelId, event, data);
-    logIfDebugMode(
-      `trackSingleCustom fbq("trackSingleCustom", ${pixelId}, ${event}, ${JSON.stringify(
-        data,
-      )});`,
-    );
-  },
+  pageView,
+  track,
+  trackSingle,
+  trackCustom,
+  trackSingleCustom,
 };
