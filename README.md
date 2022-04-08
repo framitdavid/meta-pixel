@@ -52,6 +52,7 @@ Pixel.trackSingle("your-pixel-id", "AddToCart", {
     content_name: "Dont Make Me Think",
     content_category: "Books > UX",
     content_ids: ["guid-product-id"],
+    product_catalog_id: "product-catalog-id"
     content_type: "product",
     value: 199.0,
     currency: "NOK",
