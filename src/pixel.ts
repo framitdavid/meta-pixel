@@ -42,13 +42,12 @@ const setDebugMode = (isDebugMode: boolean): void => {
 };
 
 const logIfDebugMode = (message: string): void => {
-  if (!isDebugModeActivated) return;
+  if (!isDebugModeActivated || !isConsentGranted) return;
   log(message, 'info');
 };
 
 /** To revoke consent to track data using Pixel. Read more at https://developers.facebook.com/docs/meta-pixel/implementation/gdpr */
 const revokeConsent = (): void => {
-  if (!isConsentGranted || !initialized) return;
   isConsentGranted = false;
   fbq('consent', 'revoke');
   logIfDebugMode(`Track fbq("consent", "revoke")`);
