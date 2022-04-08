@@ -48,9 +48,11 @@ const logIfDebugMode = (message: string): void => {
 
 /** To revoke consent to track data using Pixel. Read more at https://developers.facebook.com/docs/meta-pixel/implementation/gdpr */
 const revokeConsent = (): void => {
-  isConsentGranted = false;
-  fbq('consent', 'revoke');
-  logIfDebugMode(`Track fbq("consent", "revoke")`);
+  if (isConsentGranted) {
+    isConsentGranted = false;
+    fbq('consent', 'revoke');
+    logIfDebugMode(`Track fbq("consent", "revoke")`);
+  }
 };
 
 export const Pixel: Pixel = {
