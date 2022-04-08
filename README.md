@@ -71,7 +71,7 @@ Pixel.track('Purchase', {
 });
 
 // Tracking Standard Events, read more at https://developers.facebook.com/docs/meta-pixel/implementation/conversion-tracking#standard-events
-Pixel.trackSingle('Purchase', {
+Pixel.trackSingle('pixel-id','Purchase', {
   value: 199.0,
   currency: "NOK"
 });
@@ -83,7 +83,7 @@ Pixel.trackCustom('RecruitedAFriend', {
 });
 
 // Tracking Custom Events, custom events, which are visitor actions that you have defined and that you report by calling a Pixel function
-Pixel.trackSingleCustom('RecruitedAFriend', {
+Pixel.trackSingleCustom('pixel-id','RecruitedAFriend', {
   value: 199.0,
   currency: "NOK"
 });
