@@ -4,8 +4,6 @@
  *  - https://developers.facebook.com/docs/meta-pixel/reference
  *  There may be erros within this definition, please feel free to create an PR if you find any issues.
  *  */
-
-declare var fbq: MetaPixel.Fbq;
 declare module MetaPixel {
   type DataCollection =
     | AddPaymentInfo
@@ -180,5 +178,4 @@ declare module MetaPixel {
   };
 }
 
-export { fbq };
 export type { MetaPixel };
