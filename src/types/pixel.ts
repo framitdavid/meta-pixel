@@ -92,6 +92,7 @@ declare module MetaPixel {
     content_ids?: string[];
     content_name?: string;
     content_type?: string;
+    product_catalog_id?: string;
     contents?: object[];
     currency?: string;
     value?: number;
