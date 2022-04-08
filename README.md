@@ -1,49 +1,54 @@
 # Meta Pixel
-Simple, framework agnostic and GDPR Compliance library to track data to Meta
+Famework agnostic and GDPR Compliance library to track user actions to Meta Pixel.
 
-This library is a wrapper for Meta Pixel that can be used with React, Angular, Vue and all JS based applications. This library does not depend on any frameworks or libraries. The Library does support both JS and TypeScript
+This library is a wrapper around Meta Pixel. The library does not depend on any frameworks or libraries, and can therefore be used within React, Vue, Angular and all others JS based applications.
+
 
 ## Get started
 ```
-  npm install --save @framitdavid/meta-pixel
+  npm install --save @framit/meta-pixel
 ```
 
 or
 
 ```
-  yarn add @framitdavid/meta-pixel
+  yarn add @framit/meta-pixel
 ```
 
 ### How to use the package
 First your need to initialize Pixel with your pixelId.
 
 ```typescript
-import Pixel, { Config } from 'js-meta-pixel';
+import Pixel, { Config } from '@framit/meta-pixel';
 
 const config: Config = {
     pixelId: 'your-pixel-id',
-    autoConfig: true,
-    isDebugMode: false;
-}
+    autoConfig: true, // Optional
+    isDebugMode: false; // Optional
+    disablePushState: false, // Optional, not recommended. Read more at https://developers.facebook.com/ads/blog/post/2017/05/29/tagging-a-single-page-application-facebook-pixel
+    allowDuplicatePageViews: false // Optional
+} 
 
 Pixel.initialize(config);
 ```
 
-If you do not provide your PixelId, you should get an error message within the Dev-tools console: “Please initialize Pixel by calling Pixel.initialize(your-pixel-id: string) before start tracking.”
+If you do not initialize Pixel before tracking, you should get an error message within the dev-tools console: “Please initialize Pixel by calling Pixel.initialize({ pixelId: 'your-pixel-id' }) before start tracking.”
 
 ### Grant consent
-The library does not send any kind of data to Meta Pixel before the user has granted consent to beeing tracked.
+The library does not track any kind of events to Meta Pixel before the user has granted consent to beeing tracked. To tell the library that the user has granted the consents, you need to call the setHasGrantedConsent method, `Pixel.setHasGrantedConsent()`.
 
 ### Revoke consent
-When calling `Pixel.revokeConsent()`, the tracking will be stopped. 
+When calling `Pixel.revokeConsent()`, the tracking will be paused until the consent is granted by the user again. 
 
-### Tracking
-Example of tracking data to Meta Pixel.
+### How to do tracking
+Make sure you have initialized Pixel by calling `Pixel.initialize({ pixelId: 'your-pixel-id' })`, before tracking user actions.
+
 
 ```typescript
-import Pixel from 'js-meta-pixel';
+import { Pixel } from '@framit/meta-pixel';
 
-Pixel.trackSingle("1234", "AddToCart", {
+// Example of tracking add item to cart actions
+Pixel.trackSingle("your-pixel-id", "AddToCart", {
     content_name: "Dont Make Me Think",
     content_category: "Books > UX",
     content_ids: ["guid-product-id"],
@@ -51,29 +56,35 @@ Pixel.trackSingle("1234", "AddToCart", {
     value: 199.0,
     currency: "NOK",
 });
-```
 
-The following events are supported to be tracked:
 
-```typescript
-  type EventName =
-    | 'AddPaymentInfo'
-    | 'AddToCart'
-    | 'AddToWishlist'
-    | 'CompleteRegistration'
-    | 'Contact'
-    | 'CustomizeProduct'
-    | 'Donate'
-    | 'FindLocation'
-    | 'InitiateCheckout'
-    | 'Lead'
-    | 'PageView'
-    | 'Purchase'
-    | 'Schedule'
-    | 'Search'
-    | 'StartTrial'
-    | 'SubmitApplication'
-    | 'Subscribe'
-    | 'ViewContent';
+// Tracking pageView based in history-state
+Pixel.pageView();
 
+// Tracking pageView based on custom eventId.
+Pixel.pageView('my-awesome-event-id'); 
+
+// Tracking Standard Events, read more at https://developers.facebook.com/docs/meta-pixel/implementation/conversion-tracking#standard-events
+Pixel.track('Purchase', {
+  value: 199.0,
+  currency: "NOK"
+});
+
+// Tracking Standard Events, read more at https://developers.facebook.com/docs/meta-pixel/implementation/conversion-tracking#standard-events
+Pixel.trackSingle('Purchase', {
+  value: 199.0,
+  currency: "NOK"
+});
+
+// Tracking Custom Events, custom events, which are visitor actions that you have defined and that you report by calling a Pixel function
+Pixel.trackCustom('RecruitedAFriend', {
+  value: 199.0,
+  currency: "NOK"
+});
+
+// Tracking Custom Events, custom events, which are visitor actions that you have defined and that you report by calling a Pixel function
+Pixel.trackSingleCustom('RecruitedAFriend', {
+  value: 199.0,
+  currency: "NOK"
+});
 ```
