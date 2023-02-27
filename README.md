@@ -19,7 +19,7 @@ or
 First your need to initialize Pixel with your pixelId.
 
 ```typescript
-import Pixel, { Config } from '@framit/meta-pixel';
+import { Pixel, Config } from '@framit/meta-pixel';
 
 const config: Config = {
     pixelId: 'your-pixel-id',
