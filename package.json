@@ -1,5 +1,5 @@
 {
-  "name": "@framit/meta-pixel",
+  "name": "@homedia/meta-pixel",
   "version": "1.0.0",
   "description": "Simple, framework agnostic and GDPR Compliance library to track data to Meta Pixel",
   "main": "lib/index.js",
