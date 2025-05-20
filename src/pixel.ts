@@ -8,7 +8,7 @@ import {
 
 declare var fbq: MetaPixel.Fbq;
 
-type Config = {
+export type Config = {
   isDebugMode?: boolean;
   disablePushState?: boolean;
   allowDuplicatePageViews?: boolean;
